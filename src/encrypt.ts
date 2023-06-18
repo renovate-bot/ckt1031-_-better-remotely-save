@@ -5,8 +5,8 @@ import { log } from "./moreOnLog";
 
 const DEFAULT_ITER = 20000;
 
-const MAGIC_ENCRYPTED_PREFIX_BASE32 = "KNQWY5DFMRPV";
-const MAGIC_ENCRYPTED_PREFIX_BASE64URL = "U2FsdGVkX";
+export const MAGIC_ENCRYPTED_PREFIX_BASE32 = "KNQWY5DFMRPV";
+export const MAGIC_ENCRYPTED_PREFIX_BASE64URL = "U2FsdGVkX";
 
 const getKeyIVFromPassword = async (
   salt: Uint8Array,
