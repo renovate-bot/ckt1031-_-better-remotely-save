@@ -1,6 +1,6 @@
 {
   "name": "better-remotely-save",
-  "version": "0.3.25",
+  "version": "0.4.0",
   "description": "This is yet another sync plugin for Obsidian app.",
   "scripts": {
     "dev2": "node esbuild.config.mjs",
@@ -9,6 +9,7 @@
     "dev": "webpack --mode development --watch",
     "format": "npx prettier --write .",
     "clean": "npx rimraf main.js",
+    "bump": "node version-bump.mjs",
     "test": "cross-env TS_NODE_COMPILER_OPTIONS={\\\"module\\\":\\\"commonjs\\\"} mocha -r ts-node/register 'tests/**/*.ts'"
   },
   "browser": {

@@ -37,7 +37,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm test
-      - run: npm run build
+      - run: npm run build2
       - uses: actions/upload-artifact@v2
         with:
           name: my-dist
