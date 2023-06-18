@@ -13,8 +13,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    environment: env-for-buildci
-
     env:
       DROPBOX_APP_KEY: ${{secrets.DROPBOX_APP_KEY}}
       ONEDRIVE_CLIENT_ID: ${{secrets.ONEDRIVE_CLIENT_ID}}
@@ -22,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -37,7 +35,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install
+      - run: npm ci
       - run: npm test
       - run: npm run build
       - uses: actions/upload-artifact@v2
