@@ -5,19 +5,18 @@ import { log } from "./moreOnLog";
 
 const DEFAULT_ITER = 20000;
 
-// base32.stringify(Buffer.from('Salted__'))
-export const MAGIC_ENCRYPTED_PREFIX_BASE32 = "KNQWY5DFMRPV";
-// base64.stringify(Buffer.from('Salted__'))
-export const MAGIC_ENCRYPTED_PREFIX_BASE64URL = "U2FsdGVkX";
+const MAGIC_ENCRYPTED_PREFIX_BASE32 = "KNQWY5DFMRPV";
+const MAGIC_ENCRYPTED_PREFIX_BASE64URL = "U2FsdGVkX";
 
 const getKeyIVFromPassword = async (
   salt: Uint8Array,
   password: string,
   rounds: number = DEFAULT_ITER
 ) => {
+  const encoder = new TextEncoder();
   const k1 = await window.crypto.subtle.importKey(
     "raw",
-    new TextEncoder().encode(password),
+    encoder.encode(password),
     { name: "PBKDF2" },
     false,
     ["deriveKey", "deriveBits"]
@@ -37,22 +36,17 @@ const getKeyIVFromPassword = async (
   return k2;
 };
 
-export const encryptArrayBuffer = async (
+const encryptArrayBuffer = async (
   arrBuf: ArrayBuffer,
   password: string,
   rounds: number = DEFAULT_ITER,
   saltHex: string = ""
 ) => {
-  let salt: Uint8Array;
-  if (saltHex !== "") {
-    salt = hexStringToTypedArray(saltHex);
-  } else {
-    salt = window.crypto.getRandomValues(new Uint8Array(8));
-  }
+  const salt = saltHex !== "" ? hexStringToTypedArray(saltHex) : window.crypto.getRandomValues(new Uint8Array(8));
 
   const derivedKey = await getKeyIVFromPassword(salt, password, rounds);
   const key = derivedKey.slice(0, 32);
-  const iv = derivedKey.slice(32, 32 + 16);
+  const iv = derivedKey.slice(32, 48);
 
   const keyCrypt = await window.crypto.subtle.importKey(
     "raw",
@@ -62,20 +56,20 @@ export const encryptArrayBuffer = async (
     ["encrypt", "decrypt"]
   );
 
-  const enc = (await window.crypto.subtle.encrypt(
+  const enc = await window.crypto.subtle.encrypt(
     { name: "AES-CBC", iv },
     keyCrypt,
     arrBuf
-  )) as ArrayBuffer;
+  );
 
-  const prefix = new TextEncoder().encode("Salted__");
+  const prefix = new Uint8Array([83, 97, 108, 116, 101, 100, 95, 95]); // "Salted__"
 
   const res = new Uint8Array([...prefix, ...salt, ...new Uint8Array(enc)]);
 
   return bufferToArrayBuffer(res);
 };
 
-export const decryptArrayBuffer = async (
+const decryptArrayBuffer = async (
   arrBuf: ArrayBuffer,
   password: string,
   rounds: number = DEFAULT_ITER
@@ -88,7 +82,7 @@ export const decryptArrayBuffer = async (
     rounds
   );
   const key = derivedKey.slice(0, 32);
-  const iv = derivedKey.slice(32, 32 + 16);
+  const iv = derivedKey.slice(32, 48);
 
   const keyCrypt = await window.crypto.subtle.importKey(
     "raw",
@@ -98,23 +92,24 @@ export const decryptArrayBuffer = async (
     ["encrypt", "decrypt"]
   );
 
-  const dec = (await window.crypto.subtle.decrypt(
+  const dec = await window.crypto.subtle.decrypt(
     { name: "AES-CBC", iv },
     keyCrypt,
     arrBuf.slice(16)
-  )) as ArrayBuffer;
+  );
 
   return dec;
 };
 
-export const encryptStringToBase32 = async (
+const encryptStringToBase32 = async (
   text: string,
   password: string,
   rounds: number = DEFAULT_ITER,
   saltHex: string = ""
 ) => {
+  const encoder = new TextEncoder();
   const enc = await encryptArrayBuffer(
-    bufferToArrayBuffer(new TextEncoder().encode(text)),
+    bufferToArrayBuffer(encoder.encode(text)),
     password,
     rounds,
     saltHex
@@ -122,12 +117,13 @@ export const encryptStringToBase32 = async (
   return base32.stringify(new Uint8Array(enc), { pad: false });
 };
 
-export const decryptBase32ToString = async (
+const decryptBase32ToString = async (
   text: string,
   password: string,
   rounds: number = DEFAULT_ITER
 ) => {
-  return new TextDecoder().decode(
+  const decoder = new TextDecoder();
+  return decoder.decode(
     await decryptArrayBuffer(
       bufferToArrayBuffer(base32.parse(text, { loose: true })),
       password,
@@ -136,14 +132,15 @@ export const decryptBase32ToString = async (
   );
 };
 
-export const encryptStringToBase64url = async (
+const encryptStringToBase64url = async (
   text: string,
   password: string,
   rounds: number = DEFAULT_ITER,
   saltHex: string = ""
 ) => {
+  const encoder = new TextEncoder();
   const enc = await encryptArrayBuffer(
-    bufferToArrayBuffer(new TextEncoder().encode(text)),
+    bufferToArrayBuffer(encoder.encode(text)),
     password,
     rounds,
     saltHex
@@ -151,12 +148,13 @@ export const encryptStringToBase64url = async (
   return base64url.stringify(new Uint8Array(enc), { pad: false });
 };
 
-export const decryptBase64urlToString = async (
+const decryptBase64urlToString = async (
   text: string,
   password: string,
   rounds: number = DEFAULT_ITER
 ) => {
-  return new TextDecoder().decode(
+  const decoder = new TextDecoder();
+  return decoder.decode(
     await decryptArrayBuffer(
       bufferToArrayBuffer(base64url.parse(text, { loose: true })),
       password,
@@ -165,14 +163,14 @@ export const decryptBase64urlToString = async (
   );
 };
 
-export const getSizeFromOrigToEnc = (x: number) => {
+const getSizeFromOrigToEnc = (x: number) => {
   if (x < 0 || Number.isNaN(x) || !Number.isInteger(x)) {
     throw Error(`getSizeFromOrigToEnc: x=${x} is not a valid size`);
   }
   return (Math.floor(x / 16) + 1) * 16 + 16;
 };
 
-export const getSizeFromEncToOrig = (x: number) => {
+const getSizeFromEncToOrig = (x: number) => {
   if (x < 32 || Number.isNaN(x) || !Number.isInteger(x)) {
     throw Error(`getSizeFromEncToOrig: ${x} is not a valid size`);
   }
@@ -185,4 +183,15 @@ export const getSizeFromEncToOrig = (x: number) => {
     minSize: ((x - 16) / 16 - 1) * 16,
     maxSize: ((x - 16) / 16 - 1) * 16 + 15,
   };
+};
+
+export {
+  encryptArrayBuffer,
+  decryptArrayBuffer,
+  encryptStringToBase32,
+  decryptBase32ToString,
+  encryptStringToBase64url,
+  decryptBase64urlToString,
+  getSizeFromOrigToEnc,
+  getSizeFromEncToOrig,
 };
