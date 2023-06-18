@@ -2,8 +2,6 @@ import "dotenv/config";
 import esbuild from "esbuild";
 import process from "process";
 
-console.log(`esbuild version = ${esbuild.version}`);
-
 const prod = process.argv[2] === "production";
 
 const DEFAULT_DROPBOX_APP_KEY = process.env.DROPBOX_APP_KEY || "";
@@ -23,7 +21,7 @@ const context = await esbuild
     target: "esnext",
     logLevel: "info",
     sourcemap: prod ? false : "inline",
-    treeShaking: false,
+    treeShaking: prod,
     minify: prod,
     outfile: "main.js",
     define: {
