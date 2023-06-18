@@ -1,6 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:base"],
+  "includeForks": true,
   "packageRules": [
     {
       "groupName": "Ckt1031-Nodejs-Config",
