@@ -18,7 +18,7 @@ const context = await esbuild
     },
     entryPoints: ["./src/main.ts"],
     bundle: true,
-    external: ["obsidian", "electron", "fs", "tls", "net", ...builtins],
+    external: ["obsidian", "electron", "fs", "tls", "net", "http", "https"],
     inject: ["./esbuild.injecthelper.mjs"],
     format: "cjs",
     target: "esnext",
