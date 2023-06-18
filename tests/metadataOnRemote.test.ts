@@ -1,13 +1,9 @@
-import * as chai from "chai";
-import chaiAsPromised from "chai-as-promised";
+import { it, expect, describe } from 'vitest'
 
 import {
   isEqualMetadataOnRemote,
   MetadataOnRemote,
 } from "../src/metadataOnRemote";
-
-chai.use(chaiAsPromised);
-const expect = chai.expect;
 
 describe("Metadata operations tests", () => {
   it("should compare objects deeply", async () => {

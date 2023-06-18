@@ -3,14 +3,12 @@
   "version": "0.4.0",
   "description": "This is yet another sync plugin for Obsidian app.",
   "scripts": {
-    "dev2": "node esbuild.config.mjs",
-    "build2": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-    "build": "webpack --mode production",
-    "dev": "webpack --mode development --watch",
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "format": "npx prettier --write .",
     "clean": "npx rimraf main.js",
     "bump": "node version-bump.mjs",
-    "test": "cross-env TS_NODE_COMPILER_OPTIONS={\\\"module\\\":\\\"commonjs\\\"} mocha -r ts-node/register 'tests/**/*.ts'"
+    "test": "vitest run"
   },
   "browser": {
     "path": "path-browserify",
@@ -25,31 +23,20 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@microsoft/microsoft-graph-types": "^2.33.0",
-    "@types/chai": "^4.3.5",
-    "@types/chai-as-promised": "^7.1.5",
     "@types/jsdom": "^21.1.1",
     "@types/lodash": "^4.14.195",
     "@types/mime-types": "^2.1.1",
-    "@types/mocha": "^10.0.1",
     "@types/mustache": "^4.2.2",
     "@types/node": "^20.3.1",
     "@types/qrcode": "^1.5.0",
-    "builtin-modules": "^3.3.0",
-    "chai": "^4.3.7",
-    "chai-as-promised": "^7.1.1",
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "esbuild": "^0.18.4",
     "jsdom": "^22.1.0",
-    "mocha": "^10.2.0",
     "prettier": "^2.8.8",
-    "ts-loader": "^9.4.3",
-    "ts-node": "^10.9.1",
-    "tslib": "^2.5.3",
     "typescript": "^5.1.3",
-    "webdav-server": "^2.6.2",
-    "webpack": "^5.87.0",
-    "webpack-cli": "^5.1.4"
+    "vitest": "^0.32.2",
+    "webdav-server": "^2.6.2"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.354.0",

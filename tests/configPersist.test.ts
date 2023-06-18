@@ -1,11 +1,7 @@
-import * as chai from "chai";
-import chaiAsPromised from "chai-as-promised";
-
+import { it, expect, describe } from 'vitest'
 import { RemotelySavePluginSettings } from "../src/baseTypes";
 import { messyConfigToNormal, normalConfigToMessy } from "../src/configPersist";
 
-chai.use(chaiAsPromised);
-const expect = chai.expect;
 
 const DEFAULT_SETTINGS: RemotelySavePluginSettings = {
   s3: {

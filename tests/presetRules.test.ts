@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { it, expect, describe } from 'vitest'
 import type { WebdavConfig } from "../src/baseTypes";
 import { applyWebdavPresetRulesInplace } from "../src/presetRules";
 

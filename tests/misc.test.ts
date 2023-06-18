@@ -1,5 +1,4 @@
-import { expect } from "chai";
-import { JSDOM } from "jsdom";
+import { it, expect, describe } from 'vitest'
 import * as misc from "../src/misc";
 
 describe("Misc: hidden file", () => {
@@ -179,11 +178,6 @@ describe("Misc: get dirname", () => {
 });
 
 describe("Misc: extract svg", () => {
-  beforeEach(function () {
-    const fakeBrowser = new JSDOM("");
-    global.window = fakeBrowser.window as any;
-  });
-
   it("should extract rect from svg correctly", () => {
     const x = "<svg><rect/><g/></svg>";
     const y = misc.extractSvgSub(x);

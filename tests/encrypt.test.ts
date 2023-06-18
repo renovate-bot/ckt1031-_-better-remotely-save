@@ -1,5 +1,4 @@
-import * as chai from "chai";
-import chaiAsPromised from "chai-as-promised";
+import { beforeEach, it, expect, describe } from 'vitest'
 import * as fs from "fs";
 import * as path from "path";
 import {
@@ -12,9 +11,6 @@ import {
   getSizeFromOrigToEnc,
 } from "../src/encrypt";
 import { base64ToBase64url, bufferToArrayBuffer } from "../src/misc";
-
-chai.use(chaiAsPromised);
-const expect = chai.expect;
 
 describe("Encryption tests", () => {
   beforeEach(function () {
@@ -34,7 +30,7 @@ describe("Encryption tests", () => {
     const password = "hey";
     const password2 = "hey2";
     const enc = await encryptStringToBase32(k, password);
-    await expect(decryptBase32ToString(enc, password2)).to.be.rejected;
+    await expect(decryptBase32ToString(enc, password2)).rejects.toThrow();
   });
 
   it("should encrypt and decrypt string and get the same result returned", async () => {
