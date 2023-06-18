@@ -1,10 +1,10 @@
 {
-  "id": "remotely-save",
-  "name": "Remotely Save",
+  "id": "better-remotely-save",
+  "name": "Better Remotely Save",
   "version": "0.3.25",
   "minAppVersion": "0.13.21",
-  "description": "Yet another unofficial plugin allowing users to synchronize notes between local device and the cloud service.",
-  "author": "fyears",
-  "authorUrl": "https://github.com/fyears",
+  "description": "(Modified) Yet another unofficial plugin allowing users to synchronize notes between local device and the cloud service.",
+  "author": "ckt1031",
+  "authorUrl": "https://github.com/ckt1031",
   "isDesktopOnly": false
 }
