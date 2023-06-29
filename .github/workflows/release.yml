@@ -50,6 +50,5 @@ jobs:
             main.js
             manifest.json
             styles.css
-          tag_name: ${{ github.ref }}
           draft: false
           prerelease: true
