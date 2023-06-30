@@ -1,4 +1,4 @@
-import { it, expect, describe } from 'vitest'
+import { it, expect, describe } from "vitest";
 import * as misc from "../src/misc";
 
 describe("Misc: hidden file", () => {

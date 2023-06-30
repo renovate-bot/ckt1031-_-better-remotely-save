@@ -42,7 +42,10 @@ const encryptArrayBuffer = async (
   rounds: number = DEFAULT_ITER,
   saltHex: string = ""
 ) => {
-  const salt = saltHex !== "" ? hexStringToTypedArray(saltHex) : window.crypto.getRandomValues(new Uint8Array(8));
+  const salt =
+    saltHex !== ""
+      ? hexStringToTypedArray(saltHex)
+      : window.crypto.getRandomValues(new Uint8Array(8));
 
   const derivedKey = await getKeyIVFromPassword(salt, password, rounds);
   const key = derivedKey.slice(0, 32);

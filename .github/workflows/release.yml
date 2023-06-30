@@ -51,4 +51,4 @@ jobs:
             manifest.json
             styles.css
           draft: false
-          prerelease: true
+          prerelease: false

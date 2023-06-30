@@ -1,7 +1,6 @@
-import { it, expect, describe } from 'vitest'
+import { it, expect, describe } from "vitest";
 import { RemotelySavePluginSettings } from "../src/baseTypes";
 import { messyConfigToNormal, normalConfigToMessy } from "../src/configPersist";
-
 
 const DEFAULT_SETTINGS: RemotelySavePluginSettings = {
   s3: {
